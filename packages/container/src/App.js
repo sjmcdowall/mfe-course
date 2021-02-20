@@ -5,6 +5,7 @@ import { StylesProvider } from '@material-ui/core/styles'
 // App level imports
 import MarketingApp from './components/MarketingApp'
 
+// Not sure how to fix the eslint error
 // Return our component
 export default () => {
   return (
