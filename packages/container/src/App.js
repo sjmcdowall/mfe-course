@@ -16,7 +16,8 @@ const generateClassName = createGenerateClassName({
 
 // Not sure how to fix the eslint error sadly
 // Return our component
-export default () => {
+
+export default function App() {
   return (
     <div>
       <StylesProvider generateClassName={generateClassName}>
