@@ -1,37 +1,33 @@
+// Container -- Webpack Prod Config
+
 const { merge } = require('webpack-merge')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ModuleFederationPlugin = require('webpack/lib/container/ModuleFederationPlugin')
 const commonConfig = require('./webpack.common')
 
 // Grab our dependencies
 const packageJson = require('../package.json')
 
+// Get our domain from env
+const domain = process.env.PRODUCTION_DOMAIN
+
 // Setup our dev environment
-const devConfig = {
-  mode: 'development',
+const prodConfig = {
+  mode: 'production',
   output: {
-    publicPath: 'http://localhost:8081/'
-  },
-  devServer: {
-    port: 8081,
-    historyApiFallback: {
-      index: './index.html'
-    }
+    publicPath: '/auth/latest/',
+    filename: '[name].[contenthash].js'
   },
   plugins: [
     new ModuleFederationPlugin({
-      name: 'marketing',
+      name: 'auth',
       filename: 'remoteEntry.js',
       exposes: {
-        './MarketingApp': './src/bootstrap'
+        './AuthApp': './src/bootstrap'
       },
       shared: packageJson.dependencies
-    }),
-    new HtmlWebpackPlugin({
-      template: './public/index.html'
     })
   ]
 }
 
 // Now export the merged configs
-module.exports = merge(commonConfig, devConfig)
+module.exports = merge(commonConfig, prodConfig)

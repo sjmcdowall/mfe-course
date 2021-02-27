@@ -4,7 +4,10 @@ import { createMemoryHistory, createBrowserHistory } from 'history'
 import App from './App'
 
 // Mount function that starts up the app
-const mount = (el, { onNavigate, defaultHistory, initialPath }) => {
+const mount = (
+  el,
+  { onAuthChange, onNavigate, defaultHistory, initialPath }
+) => {
   // Create our route memory history and pass it along
   const history =
     defaultHistory ||
@@ -18,12 +21,12 @@ const mount = (el, { onNavigate, defaultHistory, initialPath }) => {
   }
 
   // Now render the app
-  ReactDOM.render(<App history={history} />, el)
+  ReactDOM.render(<App onAuthChange={onAuthChange} history={history} />, el)
 
   // Return communication handles
   return {
     onParentNavigate({ pathname: nextPathname }) {
-      console.log('Marketing - My Parent just navigated to', nextPathname)
+      console.log('Auth - My Parent just navigated to', nextPathname)
 
       // Push new path if different than current
       const { pathname } = history.location
@@ -35,9 +38,10 @@ const mount = (el, { onNavigate, defaultHistory, initialPath }) => {
 }
 // If we are in development and in isolation -- call mount immediately
 if (process.env.NODE_ENV === 'development') {
-  const devRoot = document.querySelector('#_marketing-dev-root')
+  const devRoot = document.querySelector('#_auth-dev-root')
 
   if (devRoot) {
+    console.log('Mounting Auth App')
     mount(devRoot, { defaultHistory: createBrowserHistory() })
   }
 }
